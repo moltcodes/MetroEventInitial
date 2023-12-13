@@ -1,0 +1,39 @@
+[
+    {
+      "id": 1,
+      "type": "Trail Biking",
+      "organizerId": 2,
+      "participants": [
+        {
+          "userId": 1,
+          "status": "accepted" 
+        }
+      ],
+      "upvotes": 10,
+      "reviews": [
+        {
+          "userId": 2,
+          "text": "Great event!"
+        }
+      ]
+    },
+    {
+        "id": 2,
+        "type": "Mountain Climbing",
+        "organizerId": 2,
+        "participants": [
+          {
+            "userId": 1,
+            "status": "accepted" 
+          }
+        ],
+        "upvotes": 10,
+        "reviews": [
+          {
+            "userId": 2,
+            "text": "Great event!"
+          }
+        ]
+      }
+  ]
+  

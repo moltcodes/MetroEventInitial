@@ -1,0 +1,38 @@
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+.h-custom {
+    height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+    .h-custom {
+    height: 100%;
+    }
+}
+
+.card{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid;
+}
+
+.eventWrapper{
+    display: flex;
+  align-items: flex-start;
+  margin-top: 10px;
+  background: rgb(134, 144, 186);
+  border-radius: 30px;
+  border: 1px solid #c4dada;
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
