@@ -10,10 +10,11 @@
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-9 col-lg-8 col-xl-6">
+        <h3 class = "centerText" style = "text-align: center; font-weight: bold;">Join Our Growing Community</h3>
         <img src="../Resources/Asset1.png" class="img-fluid" alt="Loading image">
       </div>
         <div class="col-md-8 col-lg-6 col-xl-3 offset-xl-1">
-            <br><h4><b>Join our Growing Community</b></h4>
+            <br><br>
             <form method = "POST">
             <!-- Name input -->
             <div class="form-outline mb-4">

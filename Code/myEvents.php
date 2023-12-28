@@ -2,6 +2,7 @@
     include 'header.php';
     include 'api.php';
     session_start();
+
     echo "<div class = 'wrapper'>";
         echo "<section class = 'columns'>";
             echo "<div class = 'column'>";
@@ -21,33 +22,23 @@
     function getEvents(){
         $events = getEventsFromFile();
         $organizers = getUsersFromFile();
-        $users = getUsersFromFile();
         $participantCounter = 0;
-        $userPendingFlag = false;
-        $userAcceptedFlag = false;
-        $eventID = null;
         if (!empty($events)) {
             foreach ($events as $event) {
-                $participantCounter = 0;
-                echo "<div class ='eventWrapper'>";
-                echo "<div class ='card-body'>";
-                $eventID = $event['id'];
-                echo "<h4>{$event['type']}</h4>";
-                foreach ($organizers as $organizer){
-                    if($event['organizerId'] == $organizer['id']){
-                        echo "<p>Organized by {$organizer['name']}</p>";
-                    }
+                foreach ($event['participants'] as $participant) {
+                    if($participant['userId'] == $_SESSION['userID']){
+                        echo "<div class ='eventWrapper'>";
+                        echo "<div class ='card-body'>";
+                        echo "<h4>{$event['type']}</h4>";
+
+                        foreach ($organizers as $organizer){
+                            if($event['organizerId'] == $organizer['id']){
+                                echo "<p>Organized by {$organizer['name']}</p>";
+                        }
                 }
                 
                 if (!empty($event['participants'])) {
                     foreach ($event['participants'] as $participant) {
-                        if($_SESSION['userID'] == $participant['userId']){
-                            if($participant['status'] == "pending"){
-                                $userPendingFlag = true;
-                            }else if($participant['status'] == "accepted"){
-                                $userAcceptedFlag = true;
-                            }
-                        }
                         $participantCounter++;
                     }
                     if($participantCounter == 1){
@@ -60,39 +51,21 @@
                     echo "<p>No participants for this event.</p>";
                 }
 
-                // Display upvotes
-                echo "<p>Upvotes: {$event['upvotes']}</p>";
-
-                // Display reviews
-                echo "<h6>Reviews:</h6>";
+                echo "<p class='card-text mt-4'>Upvotes: {$event['upvotes']}</p>";
+                echo "<h3 class='mt-4'>Reviews:</h3>";
                 if (!empty($event['reviews'])) {
                     foreach ($event['reviews'] as $review) {
-                        foreach($users as $user){
-                            if($review['userId'] == $user['id']){
-                                echo $user['name'];
-                            }
-                        }
-                        echo "<p>{$review['text']}</p>";
+                        echo "<p class='card-text'>User ID: {$review['userId']}, Review: {$review['text']}</p>";
                     }
                 } else {
                     echo "<p class='card-text'>No reviews for this event.</p>";
                 }
 
-                if($userPendingFlag){
-                    echo "<button>Request to Join Sent</button>";
-                }else if($userAcceptedFlag){
-                    echo "<button>Joined</button>";
-                }else{
-                    echo "<form method = 'POST'>";
-                    echo "<input type= 'submit' name = 'joinEvent' value = 'Join Event'></button>";
-                    echo "</form>";
-
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['joinEvent'])) {
-                        requestToJoinEvent($eventID);
+                echo "</div>";
+                echo "</div>";
                     }
                 }
-                echo "</div>";
-                echo "</div>";
+                
             }
         } else {
             echo "<p>No events available.</p>";

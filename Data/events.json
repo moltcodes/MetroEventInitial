@@ -1,39 +1,74 @@
 [
     {
-      "id": 1,
-      "type": "Trail Biking",
-      "organizerId": 2,
-      "participants": [
-        {
-          "userId": 1,
-          "status": "accepted" 
-        }
-      ],
-      "upvotes": 10,
-      "reviews": [
-        {
-          "userId": 2,
-          "text": "Great event!"
-        }
-      ]
+        "id": 1,
+        "type": "Trail Biking",
+        "organizerId": 2,
+        "participants": [
+            {
+                "userId": 1,
+                "status": "accepted"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            }
+        ],
+        "upvotes": 10,
+        "reviews": [
+            {
+                "userId": 2,
+                "text": "Great event!"
+            }
+        ]
     },
     {
         "id": 2,
         "type": "Mountain Climbing",
         "organizerId": 2,
         "participants": [
-          {
-            "userId": 1,
-            "status": "accepted" 
-          }
+            {
+                "userId": 1,
+                "status": "accepted"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            }
         ],
         "upvotes": 10,
         "reviews": [
-          {
-            "userId": 2,
-            "text": "Great event!"
-          }
+            {
+                "userId": 2,
+                "text": "Great event!"
+            }
         ]
-      }
-  ]
-  
+    },
+    {
+        "participants": [
+            {
+                "id": 2,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            },
+            {
+                "id": 2,
+                "status": "pending"
+            }
+        ]
+    }
+]

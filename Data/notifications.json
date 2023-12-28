@@ -2,6 +2,7 @@
     {
       "id": 1,
       "userId": 5,
+      "name" : "Chico Lachowski",
       "type": "event_reminder",
       "eventId": 1,
       "message": "Reminder: Trail Biking event tomorrow at 3 PM."

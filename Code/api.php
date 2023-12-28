@@ -28,6 +28,17 @@
         return json_decode($eventData, true);
     }
 
+    function getNotificationsFromFile(){
+        global $notificationsJSON;
+
+        if (!file_exists($notificationsJSON)) {
+            return [];
+        }
+
+        $notificationData = file_get_contents($notificationsJSON);
+        return json_decode($notificationData, true);
+    }
+
     function registerUser($name, $username, $email, $password){
         global $usersJSON;
         $users = getUsersFromFile();
@@ -49,11 +60,31 @@
         foreach($users as $user){
             if($user['email'] == $email){
                 if($password == $user['password']){
+                    $_SESSION['userID'] = $user['id'];
                     header("Location: userPage.php");
                     exit();
                 }
             }
         }
     return false;
+    }
+
+    function requestToJoinEvent($eventID){
+        global $eventsJSON;
+        $events = getEventsFromFile();
+        $ctr = 0;
+
+        foreach($events as $event){
+            $ctr++;
+            if($event['id'] == $eventID){
+                $newParticipant = [
+                    'id' => $_SESSION['userID'],
+                    'status' => "pending"
+                ];
+                $events[$ctr-1]['participants'][] = $newParticipant;
+            }
+        }
+        
+        file_put_contents($eventsJSON, json_encode($events, JSON_PRETTY_PRINT));
     }
 ?>

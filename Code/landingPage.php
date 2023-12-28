@@ -63,7 +63,6 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginEmail']) && isset($_POST['loginPassword'])) {
       $email = $_POST['loginEmail'];
       $password = $_POST['loginPassword'];
-
       if(!$email || !$password){
           echo "<script>alert('Error in log-in!')</script>";
           return;
