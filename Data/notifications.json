@@ -1,11 +1,9 @@
 [
     {
-      "id": 1,
-      "userId": 5,
-      "name" : "Chico Lachowski",
-      "type": "event_reminder",
-      "eventId": 1,
-      "message": "Reminder: Trail Biking event tomorrow at 3 PM."
+        "id": 1,
+        "userId": "2",
+        "name": "John Doe",
+        "type": "Event Request Update",
+        "message": "Your request to be an Administrator was accepted!"
     }
-  ]
-  
+]

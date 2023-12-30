@@ -6,7 +6,7 @@
 
     echo "<div class = 'wrapper'>";
         echo "<section class = 'columns'>";
-            echo "<div class = 'column2'>";
+            echo "<div class = 'column3'>";
                 echo "<h5 class ='textCenter'>Control Center</h5>";
                 echo "<div class ='notificationWrapper'>";
                 echo "<div class ='card-body'>";
@@ -28,37 +28,14 @@
                 echo "</div>";
                 echo "</div>";
 
-                echo "<div class ='notificationWrapper'>";
-                    echo "<div class ='card-body'>";
-                        echo "<h6>Be an Administrator!</h6>";
-                        echo "<p>Send your resume to metroevents@admin.com and click the button</p>";
-                        echo "<form method = 'POST'>";
-                        $adminReq = getAdminReqFromFile();
-                        $adminReqFlag = false;
-                        foreach($adminReq as $ar){
-                            if($_SESSION['userID'] == $ar['userId']){
-                                $adminReqFlag = true;
-                            }
-                        }
-
-                        if($adminReqFlag){
-                            echo "<input type= 'submit' name = 'reqOrg' value = 'Request Pending'></button>";
-                        }else{
-                            echo "<input type= 'submit' name = 'reqOrg' value = 'Join the Team'></button>";
-                        }
-                       
-                        echo "</form>";
-                    echo "</div>";
-                echo "</div>";
-
             echo "</div>";
-            echo "<div class = 'column2'>";
-                echo "<h5 class ='textCenter'>User View</h5>";
-                getEvents();
+            echo "<div class = 'column3'>";
+                echo "<h5 class ='textCenter'>Events Dashboard</h5>";
+                getEventsAdministrator();
             echo "</div>";
-            echo "<div class = 'column2'>";
-            echo "<h5 class ='textCenter'>Events Dashboard Log</h5>";
-                getEventsOrganizer();
+            echo "<div class = 'column3'>";
+            echo "<h5 class ='textCenter'>Promotion Requests</h5>";
+                getRequestList();
                 
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reqOrg'])) {
@@ -154,7 +131,7 @@
         }
     }
 
-    function getEventsOrganizer(){
+    function getEventsAdministrator(){
         $events = getEventsFromFile();
         $organizers = getUsersFromFile();
         $users = getUsersFromFile();
@@ -222,7 +199,7 @@
                                 $participantCounter2++;
 
                                 echo "<form method='POST' action = ''>";
-                                echo "<input type='submit' name = 'approveUser' value = 'Approve'>";
+                                echo "<input type='submit' name = 'approveUser' value = 'Approve'>"; //Line 236
                                 echo "<input type='hidden' name='approveUserDetermine' value= $idToAction>"; 
                                 echo "<input type='hidden' name='eventDetermine' value= $eventID>";
                                 echo "</form>";
@@ -237,7 +214,7 @@
                                     $userIDPar = $_POST['approveUserDetermine'];
                                     $eventIDPar = $_POST['eventDetermine'];
                                     respondToEventRequest(true, $eventIDPar, $userIDPar); 
-                                    header("Location: ".$_SERVER['PHP_SELF']); 
+                                    header("Location: ".$_SERVER['PHP_SELF']); //Line 251
                                     exit();
                                 }
 
@@ -275,6 +252,90 @@
             }
         } else {
             echo "<p>No events available.</p>";
+        }
+    }
+
+    function getRequestList(){
+        global $adminRequestJSON;
+        global $organizerRequestJSON;
+
+        $adminReq = getAdminReqFromFile();
+        $orgReq = getOrgReqFromFile();
+        $users = getUsersFromFile();
+        $idToAction = null;
+
+        echo "<h6>List of Organizer Applicants</h6>";
+        foreach($orgReq as $or){
+            $idToAction = $or['userId'];
+            foreach($users as $user){
+                if($or['userId'] == $user['id'] && $or['status'] == "pending"){
+                    echo "<div class ='notificationWrapper'>";
+                    echo "<div class ='card-body'>";
+                    echo $user['name'];
+                    echo "<form method='POST' action = ''>";
+                    echo "<input type='submit' name = 'approveUserOrg' value = 'Approve'>"; //Line 236
+                    echo "<input type='hidden' name='approveUserOrgDetermine' value= $idToAction>"; 
+                    echo "</form>";
+
+                    echo "<form method = 'POST'>";
+                    echo "<input type= 'submit' name = 'declineUserOrg' value = 'Decline'>";
+                    echo "<input type='hidden' name='declineUserOrgDetermine' value= $idToAction>";
+                    echo "</form>";
+                    echo "</div>";
+                    echo "</div>";
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['approveUserOrg'])) {
+                        $userIDPar = $_POST['approveUserOrgDetermine'];
+                        respondToOrganizerRequest(true, $userIDPar); 
+                        header("Location: ".$_SERVER['PHP_SELF']); //Line 251
+                        exit();
+                    }
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['declineUserOrg'])) {
+                        $userIDPar = $_POST['declineUserOrgDetermine'];
+                        respondToOrganizerRequest(false, $userIDPar);
+                        header("Location: ".$_SERVER['PHP_SELF']);
+                        exit();
+                    }
+                }
+            }
+        }
+
+        echo "<h6>List of Administrator Applicants</h6>";
+        foreach($adminReq as $ar){
+            $idToAction = $ar['userId'];
+            foreach($users as $user){
+                if($ar['userId'] == $user['id'] && $ar['status'] == "pending"){
+                    echo "<div class ='notificationWrapper'>";
+                    echo "<div class ='card-body'>";
+                    echo $user['name'];
+                    echo "<form method='POST' action = ''>";
+                    echo "<input type='submit' name = 'approveUserAdmin' value = 'Approve'>"; //Line 236
+                    echo "<input type='hidden' name='approveUserAdminDetermine' value= $idToAction>"; 
+                    echo "</form>";
+
+                    echo "<form method = 'POST'>";
+                    echo "<input type= 'submit' name = 'declineUserAdmin' value = 'Decline'>";
+                    echo "<input type='hidden' name='declineUserAdminDetermine' value= $idToAction>";
+                    echo "</form>";
+                    echo "</div>";
+                    echo "</div>";
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['approveUserAdmin'])) {
+                        $userIDPar = $_POST['approveUserAdminDetermine'];
+                        respondToAdminRequest(true, $userIDPar); 
+                        header("Location: ".$_SERVER['PHP_SELF']); //Line 251
+                        exit();
+                    }
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['declineUserAdmin'])) {
+                        $userIDPar = $_POST['declineUserAdminDetermine'];
+                        respondToAdminRequest(false, $userIDPar);
+                        header("Location: ".$_SERVER['PHP_SELF']);
+                        exit();
+                    }
+                }
+            }
         }
     }
 

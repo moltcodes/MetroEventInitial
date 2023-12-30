@@ -2,6 +2,7 @@
     include 'header.php';
     include 'api.php';
     session_start();
+
     echo "<div class = 'wrapper'>";
         echo "<section class = 'columns'>";
             echo "<div class = 'column'>";
@@ -13,10 +14,35 @@
                 getEvents();
             echo "</div>";
             echo "<div class = 'column'>";
-                echo "Third column";
-            echo "</div>";
+            echo "<h5 class ='textCenter'>Opportunity Log</h5>";
+                echo "<div class ='notificationWrapper'>";
+                    echo "<div class ='card-body'>";
+                        echo "<h6>Be an Organizer!</h6>";
+                        echo "<p>Send your resume to metroevents@admin.com and click the button</p>";
+                        echo "<form method = 'POST'>";
+                        $orgReq = getOrgReqFromFile();
+                        $orgReqFlag = false;
+                        foreach($orgReq as $or){
+                            if($_SESSION['userID'] == $or['userId']){
+                                $orgReqFlag = true;
+                            }
+                        }
+
+                        if($orgReqFlag){
+                            echo "<input type= 'submit' name = 'reqOrg' value = 'Request Pending'></button>";
+                        }else{
+                            echo "<input type= 'submit' name = 'reqOrg' value = 'Join the Team'></button>";
+                        }
+                       
+                        echo "</form>";
+                    echo "</div>";
+                echo "</div>";
+
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reqOrg'])) {
+                    requestToBeOrganizer($_SESSION['userID']);
+                }
         echo "</div>";
-        echo "</div>";
+    echo "</div>";
 
     function getEvents(){
         $events = getEventsFromFile();
@@ -28,6 +54,8 @@
         $eventID = null;
         if (!empty($events)) {
             foreach ($events as $event) {
+                $userPendingFlag = false;
+                $userAcceptedFlag = false;
                 $participantCounter = 0;
                 echo "<div class ='eventWrapper'>";
                 echo "<div class ='card-body'>";
@@ -60,10 +88,8 @@
                     echo "<p>No participants for this event.</p>";
                 }
 
-                // Display upvotes
                 echo "<p>Upvotes: {$event['upvotes']}</p>";
 
-                // Display reviews
                 echo "<h6>Reviews:</h6>";
                 if (!empty($event['reviews'])) {
                     foreach ($event['reviews'] as $review) {
@@ -85,10 +111,14 @@
                 }else{
                     echo "<form method = 'POST'>";
                     echo "<input type= 'submit' name = 'joinEvent' value = 'Join Event'></button>";
+                    echo "<input type='hidden' name='joinEventDetermine' value= $eventID>";
                     echo "</form>";
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['joinEvent'])) {
-                        requestToJoinEvent($eventID);
+                        $eventIDPar = $_POST['joinEventDetermine'];
+                        requestToJoinEvent($eventIDPar);
+                        header("Refresh:0");
+                        exit(0);
                     }
                 }
                 echo "</div>";
@@ -101,12 +131,23 @@
 
     function getNotifications(){
         $notifications = getNotificationsFromFile();
-
+        $notificationID = null;
         foreach($notifications as $notification){
+            $notificationID = $notification['id'];
             echo "<div class = 'notificationWrapper'>";
             echo "<div class ='card-body'>";
             echo "<h5> From {$notification['name']}</h5>";
             echo "<p>{$notification['message']}</p>";
+            echo "<form method = 'POST'>";
+            echo "<input type= 'submit' name = 'deleteNotif' value = 'Delete'></button>";
+            echo "<input type='hidden' name='deleteNotifDetermine' value= $notificationID>";
+            echo "</form>";
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['deleteNotif'])) {
+            $notificationIDPar = $_POST['deleteNotifDetermine'];
+            deleteNotification($notificationIDPar);
+            header("Refresh:0");
+            exit(0);
+            }
             echo "</div>";
             echo "</div>";
         }

@@ -3,7 +3,7 @@
         "id": 1,
         "type": "Trail Biking",
         "organizerId": 2,
-        "date": "2023-12-20",
+        "date": "12\/03\/2023",
         "participants": [
             {
                 "userId": 2,
@@ -11,11 +11,11 @@
             },
             {
                 "userId": 3,
-                "status": "accepted"
+                "status": "pending"
             },
             {
                 "userId": 4,
-                "status": "accepted"
+                "status": "pending"
             }
         ],
         "upvotes": 23,
@@ -38,7 +38,7 @@
         "id": 2,
         "type": "Mountain Climbing",
         "organizerId": 2,
-        "date": "2023-12-20",
+        "date": "12\/03\/2023",
         "participants": [
             {
                 "userId": 2,
@@ -59,27 +59,9 @@
     },
     {
         "id": 3,
-        "type": "Velez Fun Run",
+        "type": "testing",
         "organizerId": 3,
         "date": "2023-12-20",
-        "participants": [
-            {
-                "userId": 3,
-                "status": "declined"
-            },
-            {
-                "userId": 2,
-                "status": "accepted"
-            }
-        ],
-        "upvotes": 0,
-        "reviews": []
-    },
-    {
-        "id": 4,
-        "type": "Pitch Perfect",
-        "organizerId": 2,
-        "date": "2023-12-15",
         "participants": [],
         "upvotes": 0,
         "reviews": []

@@ -5,20 +5,38 @@
         "username": "john_doe",
         "email": "john@example.com",
         "password": "12345",
-        "role": "user"
+        "role": "admin"
     },
     {
         "id": 2,
         "name": "Chico Lachowski",
         "username": "yochico",
         "email": "talip@gmail.com",
-        "password": "12345"
+        "password": "12345",
+        "role": "admin"
     },
     {
         "id": 3,
         "name": "Malt Budler",
         "username": "moltbudler",
         "email": "molt@gmail.com",
-        "password": "12367"
+        "password": "12367",
+        "role": "organizer"
+    },
+    {
+        "id": 4,
+        "name": "Shailene",
+        "username": "shazie",
+        "email": "shazie@gmail.com",
+        "password": "13246",
+        "role": "user"
+    },
+    {
+        "id": 5,
+        "name": "aliyah",
+        "username": "venice",
+        "email": "aliyah@gmail.com",
+        "password": "7777777",
+        "role": "user"
     }
 ]
